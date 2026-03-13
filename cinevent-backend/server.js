@@ -2,8 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
+const connectDB = require('./config/database');
 
 dotenv.config();
+
+connectDB();
 
 const app = express();
 
