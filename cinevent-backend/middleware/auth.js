@@ -18,6 +18,10 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'User not found.' });
     }
 
+    if (!user.isActive) {
+      return res.status(401).json({ success: false, message: 'Account is deactivated.' });
+    }
+
     req.user = user;
     next();
   } catch (err) {
@@ -25,4 +29,16 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = protect;
+const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: `Access denied. Role '${req.user.role}' is not authorized.`,
+      });
+    }
+    next();
+  };
+};
+
+module.exports = { protect, authorize };

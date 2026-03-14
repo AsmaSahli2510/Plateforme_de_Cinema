@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,9 +34,19 @@ const userSchema = new mongoose.Schema(
       enum: ['spectator', 'organizer', 'admin'],
       default: 'spectator',
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
     isActive: {
       type: Boolean,
       default: true,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpire: {
+      type: Date,
     },
   },
   { timestamps: true }
@@ -49,6 +61,19 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || '7d',
+  });
+};
+
+userSchema.methods.generateResetPasswordToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+  return resetToken;
 };
 
 const User = mongoose.model('User', userSchema);
