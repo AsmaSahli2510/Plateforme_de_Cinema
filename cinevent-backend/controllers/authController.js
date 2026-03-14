@@ -4,6 +4,7 @@ const Spectator = require('../models/Spectator');
 const Organizer = require('../models/Organizer');
 const { sendEmail } = require('../utils/emailService');
 
+
 exports.registerSpectator = async (req, res, next) => {
   try {
     const { firstName, lastName, email, password } = req.body;
