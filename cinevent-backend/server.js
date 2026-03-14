@@ -15,8 +15,10 @@ app.use(cors());
 app.use(morgan('dev'));
 
 const authRoutes = require('./routes/authRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 app.use('/api/auth', authRoutes);
+app.use('/api/events', eventRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Cinevent backend is running' });
