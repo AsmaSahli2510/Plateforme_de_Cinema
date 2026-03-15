@@ -1,10 +1,9 @@
 import Navbar from "../components/Navbar";
-
+import heroImage from "../assets/images/upscalemedia-transformed.png";
 const Home = () => {
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen text-charcoal dark:text-white">
 
-      <Navbar />
 
       <main className="w-full">
 
@@ -14,7 +13,7 @@ const Home = () => {
           <div className="absolute inset-0 z-0">
             <div
               className="w-full h-full bg-cover bg-center"
-              style={{ backgroundImage: "url('/images/upscalemedia-transformed.png')" }}
+              style={{ backgroundImage: `url(${heroImage})` }}
             ></div>
 
             <div className="absolute inset-0 bg-black/50"></div>
