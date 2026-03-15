@@ -1,0 +1,48 @@
+services:
+  # ── MongoDB ────────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: cinevent_mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - cinevent_net
+
+  # ── Backend (Express / Node) ───────────────────────────────────────────────
+  backend:
+    build:
+      context: ./cinevent-backend
+    container_name: cinevent_backend
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/cineevent
+      JWT_SECRET: ${JWT_SECRET:-supersecret}
+      JWT_EXPIRE: ${JWT_EXPIRE:-7d}
+    ports:
+      - "5000:5000"
+    networks:
+      - cinevent_net
+
+  # ── Frontend (React / Vite → Nginx) ───────────────────────────────────────
+  frontend:
+    build:
+      context: ./cinevent-frontend
+    container_name: cinevent_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - cinevent_net
+
+volumes:
+  mongo_data:
+
+networks:
+  cinevent_net:
+    driver: bridge
