@@ -153,23 +153,6 @@ export default function SpectatorRegistrationPage() {
                     </span>
                   </div>
                 </div>
-
-                <div className="group flex cursor-pointer items-center justify-between rounded-xl border border-white/5 bg-charcoal/50 p-4 transition-all hover:border-accent/30">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white/20 transition-colors group-hover:border-accent" />
-                    <span className="text-sm font-medium text-white/80">
-                      I am not a projector
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="material-symbols-outlined text-xl text-white/40">
-                      verified_user
-                    </span>
-                    <span className="text-[8px] font-bold uppercase text-white/20">
-                      Privacy • Terms
-                    </span>
-                  </div>
-                </div>
               </div>
 
               <div className="pt-4">
